@@ -1,73 +1,98 @@
-# Welcome to your Lovable project
+# Sentinel
 
-## Project info
+Sentinel is a real-time geospatial monitoring and intrusion detection platform.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+It simulates moving assets (vehicles or drones), allows the creation of restricted zones, and generates alerts when assets enter protected areas.
 
-## How can I edit this code?
+This project focuses on monitoring, detection, and response logic — not hardware or weapons.
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## Overview
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+Sentinel demonstrates:
 
-Changes made via Lovable will be committed automatically to this repo.
+- Real-time asset movement simulation
+- Geofence (polygon) restricted zones
+- Intrusion detection logic
+- Risk-based alert generation
+- Event logging system
+- Tactical-style monitoring dashboard
 
-**Use your preferred IDE**
+It models the type of monitoring systems used in infrastructure protection, border security, and surveillance platforms.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Core Features
 
-Follow these steps:
+### Live Interactive Map
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- Dark tactical map (Leaflet + CartoDB)
+- Real-time asset tracking
+- Labeled markers
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Restricted Zones
 
-# Step 3: Install the necessary dependencies.
-npm i
+- Draw custom polygon zones
+- Assign risk levels
+- Toggle zone states
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### Intrusion Detection
 
-**Edit a file directly in GitHub**
+- Detects when assets enter restricted zones
+- Changes asset state dynamically
+- Generates timestamped alerts
+- Logs coordinates and zone ID
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Alert System
 
-**Use GitHub Codespaces**
+- Alert counter
+- Risk classification
+- Event history panel
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## Architecture (High-Level)
 
-This project is built with:
+- Frontend: Interactive map interface
+- Simulation Engine: Asset movement logic
+- Detection Engine: Point-in-polygon geofence check
+- Alert System: Risk scoring and logging
+- UI Dashboard: Real-time status display
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## Use Cases
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+This project can simulate:
 
-## Can I connect a custom domain to my Lovable project?
+- Critical infrastructure protection
+- Airport perimeter monitoring
+- Maritime restricted waters
+- Border monitoring systems
+- Secure facility surveillance
 
-Yes, you can!
+---
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Future Improvements
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- Persistent database storage
+- User authentication
+- Historical playback mode
+- Heatmap visualization
+- Risk escalation logic
+- Multi-region monitoring
+
+---
+
+## Disclaimer
+
+This project is a software simulation for educational and demonstration purposes only.
+
+It does not control hardware, weapons, or real-world surveillance systems.
+
+---
+
+## License
+
+MIT License
