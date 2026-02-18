@@ -1,12 +1,12 @@
-import { useEffect, useRef, useCallback } from 'react';
-import { Asset, RestrictedZone, IntrusionLog } from '@/types';
-import { isPointInPolygon, generateId } from '@/lib/geo';
+import { useEffect, useRef, useCallback } from "react";
+import { Asset, RestrictedZone, IntrusionLog } from "@/types";
+import { isPointInPolygon, generateId } from "@/lib/geo";
 
 interface UseIntrusionDetectionProps {
   assets: Asset[];
   zones: RestrictedZone[];
   onIntrusion: (log: IntrusionLog) => void;
-  updateAssetStatus: (assetId: string, status: Asset['status']) => void;
+  updateAssetStatus: (assetId: string, status: Asset["status"]) => void;
 }
 
 export function useIntrusionDetection({
@@ -49,11 +49,10 @@ export function useIntrusionDetection({
         }
       }
 
-      // Update asset status
-      if (isIntruding && asset.status !== 'intruding') {
-        updateAssetStatus(asset.id, 'intruding');
-      } else if (!isIntruding && asset.status === 'intruding') {
-        updateAssetStatus(asset.id, 'safe');
+      if (isIntruding && asset.status !== "intruding") {
+        updateAssetStatus(asset.id, "intruding");
+      } else if (!isIntruding && asset.status === "intruding") {
+        updateAssetStatus(asset.id, "safe");
       }
     }
 

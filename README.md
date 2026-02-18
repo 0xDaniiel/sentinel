@@ -1,5 +1,7 @@
 # Sentinel
 
+![Zone Sentinel Demo](./assets/demo.gif)
+
 Sentinel is a real-time geospatial monitoring and intrusion detection platform.
 
 It simulates moving assets (vehicles or drones), allows the creation of restricted zones, and generates alerts when assets enter protected areas.

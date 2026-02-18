@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-draw/dist/leaflet.draw.css';
-import 'leaflet-draw';
-import { Asset, RestrictedZone, Position } from '@/types';
-import { generateId, getRiskColor } from '@/lib/geo';
+import { useEffect, useRef } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet-draw/dist/leaflet.draw.css";
+import "leaflet-draw";
+import { Asset, RestrictedZone, Position } from "@/types";
+import { generateId, getRiskColor } from "@/lib/geo";
 
 interface MapViewProps {
   assets: Asset[];
@@ -12,18 +12,23 @@ interface MapViewProps {
   onZoneCreated: (zone: RestrictedZone) => void;
 }
 
-const RISK_LEVELS: RestrictedZone['riskLevel'][] = ['low', 'medium', 'high', 'critical'];
+const RISK_LEVELS: RestrictedZone["riskLevel"][] = [
+  "low",
+  "medium",
+  "high",
+  "critical",
+];
 let zoneCounter = 0;
 
 function getAssetIcon(asset: Asset): L.DivIcon {
-  const isIntruding = asset.status === 'intruding';
-  const color = isIntruding ? '#e04444' : '#2dd284';
-  const pulseClass = isIntruding ? 'alert-pulse' : '';
-  const icon = asset.type === 'drone' ? '◆' : '▲';
+  const isIntruding = asset.status === "intruding";
+  const color = isIntruding ? "#e04444" : "#2dd284";
+  const pulseClass = isIntruding ? "alert-pulse" : "";
+  const icon = asset.type === "drone" ? "◆" : "▲";
   const rotation = asset.heading;
 
   return L.divIcon({
-    className: 'custom-asset-icon',
+    className: "custom-asset-icon",
     html: `
       <div class="${pulseClass}" style="
         display: flex;
@@ -36,7 +41,7 @@ function getAssetIcon(asset: Asset): L.DivIcon {
           height: 28px;
           background: ${color}22;
           border: 2px solid ${color};
-          border-radius: ${asset.type === 'drone' ? '4px' : '50%'};
+          border-radius: ${asset.type === "drone" ? "4px" : "50%"};
           display: flex;
           align-items: center;
           justify-content: center;
@@ -64,14 +69,17 @@ function getAssetIcon(asset: Asset): L.DivIcon {
   });
 }
 
-export default function MapView({ assets, zones, onZoneCreated }: MapViewProps) {
+export default function MapView({
+  assets,
+  zones,
+  onZoneCreated,
+}: MapViewProps) {
   const mapRef = useRef<L.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const assetMarkersRef = useRef<Map<string, L.Marker>>(new Map());
   const zoneLayersRef = useRef<Map<string, L.Polygon>>(new Map());
   const drawnItemsRef = useRef<L.FeatureGroup | null>(null);
 
-  // Initialize map
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
@@ -82,23 +90,24 @@ export default function MapView({ assets, zones, onZoneCreated }: MapViewProps) 
       attributionControl: false,
     });
 
-    // Dark tile layer
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19,
-    }).addTo(map);
+    L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+      {
+        maxZoom: 19,
+      },
+    ).addTo(map);
 
-    // Draw controls
     const drawnItems = new L.FeatureGroup();
     map.addLayer(drawnItems);
     drawnItemsRef.current = drawnItems;
 
     const drawControl = new L.Control.Draw({
-      position: 'topright',
+      position: "topright",
       draw: {
         polygon: {
           shapeOptions: {
-            color: '#e8c840',
-            fillColor: '#e8c840',
+            color: "#e8c840",
+            fillColor: "#e8c840",
             fillOpacity: 0.15,
             weight: 2,
           },
@@ -108,8 +117,8 @@ export default function MapView({ assets, zones, onZoneCreated }: MapViewProps) 
         circle: false,
         rectangle: {
           shapeOptions: {
-            color: '#e8c840',
-            fillColor: '#e8c840',
+            color: "#e8c840",
+            fillColor: "#e8c840",
             fillOpacity: 0.15,
             weight: 2,
           },
@@ -127,8 +136,11 @@ export default function MapView({ assets, zones, onZoneCreated }: MapViewProps) 
 
     map.on(L.Draw.Event.CREATED, (e: any) => {
       const layer = e.layer as L.Polygon;
-      const latlngs = (layer.getLatLngs()[0] as L.LatLng[]);
-      const points: Position[] = latlngs.map(ll => ({ lat: ll.lat, lng: ll.lng }));
+      const latlngs = layer.getLatLngs()[0] as L.LatLng[];
+      const points: Position[] = latlngs.map((ll) => ({
+        lat: ll.lat,
+        lng: ll.lng,
+      }));
 
       zoneCounter++;
       const riskLevel = RISK_LEVELS[Math.min(zoneCounter - 1, 3) % 4];
@@ -136,7 +148,7 @@ export default function MapView({ assets, zones, onZoneCreated }: MapViewProps) 
 
       const zone: RestrictedZone = {
         id: generateId(),
-        name: `Zone ${String(zoneCounter).padStart(2, '0')}`,
+        name: `Zone ${String(zoneCounter).padStart(2, "0")}`,
         points,
         riskLevel,
         color,
@@ -153,15 +165,13 @@ export default function MapView({ assets, zones, onZoneCreated }: MapViewProps) 
     };
   }, []);
 
-  // Update asset markers
   useEffect(() => {
     if (!mapRef.current) return;
 
     const map = mapRef.current;
     const existingMarkers = assetMarkersRef.current;
-    const currentIds = new Set(assets.map(a => a.id));
+    const currentIds = new Set(assets.map((a) => a.id));
 
-    // Remove stale markers
     existingMarkers.forEach((marker, id) => {
       if (!currentIds.has(id)) {
         map.removeLayer(marker);
@@ -169,7 +179,6 @@ export default function MapView({ assets, zones, onZoneCreated }: MapViewProps) 
       }
     });
 
-    // Update or add markers
     for (const asset of assets) {
       const existing = existingMarkers.get(asset.id);
       if (existing) {
@@ -184,15 +193,13 @@ export default function MapView({ assets, zones, onZoneCreated }: MapViewProps) 
     }
   }, [assets]);
 
-  // Update zone polygons
   useEffect(() => {
     if (!mapRef.current) return;
 
     const map = mapRef.current;
     const existingLayers = zoneLayersRef.current;
-    const currentIds = new Set(zones.map(z => z.id));
+    const currentIds = new Set(zones.map((z) => z.id));
 
-    // Remove stale
     existingLayers.forEach((layer, id) => {
       if (!currentIds.has(id)) {
         map.removeLayer(layer);
@@ -200,19 +207,18 @@ export default function MapView({ assets, zones, onZoneCreated }: MapViewProps) 
       }
     });
 
-    // Add new
     for (const zone of zones) {
       if (existingLayers.has(zone.id)) continue;
 
       const polygon = L.polygon(
-        zone.points.map(p => [p.lat, p.lng] as [number, number]),
+        zone.points.map((p) => [p.lat, p.lng] as [number, number]),
         {
           color: zone.color,
           fillColor: zone.color,
           fillOpacity: 0.12,
           weight: 2,
-          dashArray: '8 4',
-        }
+          dashArray: "8 4",
+        },
       ).addTo(map);
 
       polygon.bindTooltip(
@@ -220,7 +226,7 @@ export default function MapView({ assets, zones, onZoneCreated }: MapViewProps) 
           <strong>${zone.name}</strong><br/>
           Risk: ${zone.riskLevel.toUpperCase()}
         </div>`,
-        { className: 'zone-tooltip', sticky: true }
+        { className: "zone-tooltip", sticky: true },
       );
 
       existingLayers.set(zone.id, polygon);
