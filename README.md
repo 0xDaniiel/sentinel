@@ -1,6 +1,6 @@
 # Sentinel
 
-![Zone Sentinel Demo](./assets/sentinel.gif)
+![Zone Sentinel Demo](/assets/sentinel.gif)
 
 Sentinel is a real-time geospatial monitoring and intrusion detection platform.
 
